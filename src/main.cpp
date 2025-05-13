@@ -4,7 +4,7 @@
 #include <vector>
 #include <Eigen/Dense>
 #include <iomanip>
-
+#include <iostream>
 
 #include "KalmanFilter.h"
 
@@ -117,3 +117,4 @@ int main(int argc, char* argv[]) {
     std::cout << "Output saved to kf_output.csv\n";
     return 0;
 }
+

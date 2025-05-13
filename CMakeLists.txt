@@ -7,7 +7,11 @@ find_package(Eigen3 CONFIG REQUIRED)
 
 add_executable(sensor_fusion
         src/main.cpp
-        src/kalmanFilter.cpp)
+        src/kalmanFilter.cpp
+        include/slam.h
+        src/slam.cpp
+        include/line.h
+)
 
 target_link_libraries(sensor_fusion
         PRIVATE Eigen3::Eigen
