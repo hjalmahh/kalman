@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
     // Initialize Kalman Filter (with dummy dt, real dt used in update)
     KalmanFilter kf(0.033, A, C, Q, R, P);
 
-    std::ifstream file("data/merged_files/merged_kjor.csv");
+    std::ifstream file("data/merged_files/merged_data.csv");
     std::ofstream out("kf_output.csv");
     std::string line;
 

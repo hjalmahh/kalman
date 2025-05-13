@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 
 # Load Kalman filter output CSV
 df = pd.read_csv("kf_output.csv")
-odom_raw = pd.read_csv("data/csv_export_jetracer_kjoring/odom_raw.csv")
+odom_raw = pd.read_csv("data/kjor/odom_raw.csv")
 odom_raw["datetime"] = pd.to_datetime(df["timestamp"], unit="s")
-imu = pd.read_csv("data/csv_export_jetracer_kjoring/imu.csv")
+imu = pd.read_csv("data/kjor/imu.csv")
 imu["datetime"] = pd.to_datetime(df["timestamp"], unit="s")
 acc_x = imu[".linear_acceleration.x"].values
 acc_y = imu[".linear_acceleration.y"].values
