@@ -1,5 +1,5 @@
-#ifndef _line_H_
-#define _line_H_
+#ifndef _LINE_H_
+#define _LINE_H_
 
 #include <iostream>
 #include <stdio.h>
@@ -45,7 +45,7 @@ namespace line_detection
         int detectfullline(const int);
         void cleanline();
         bool delete_short_line(const int, const int);
-        void generate(std::vector<gline>& templ_line2);
+        void generate(std::vector<gline>& temp_line2);
 
         private:
         CSData cs_data_;
@@ -62,4 +62,4 @@ namespace line_detection
         double mid5;
     };
 }
-#endif //_line_H_
+#endif //_LINE_H_

@@ -80,7 +80,7 @@ struct line_segment
     int right;
     POINT p1;
     POINT p2;
-    bool inte [2];
+    bool inte[2];
 };
 
 struct least

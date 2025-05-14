@@ -38,7 +38,7 @@ void line_detection::line_detector::set_angle_start(double angle_start)
 
 void line_detection::line_detector::set_min_line_length(double  min_line_length)
 {
-    params_.min_line_points = min_line_length;
+    params_.min_line_length = min_line_length;
 }
 
 void line_detection::line_detector::set_predict_distance(double predict_distance)
@@ -58,7 +58,7 @@ void line_detection::line_detector::set_seed_line_points(unsigned int seed_line_
 
 //---------
 
-void line_detection::line_detector::setCosSinData(const std::vector<double>& bearings, const std::vector<double>& cos_value, const std::vector<double>& sin_value, const std::vector<unsigned int>& index)
+void line_detection::line_detector::setCosSinData(const std::vector<double>& bearings, const std::vector<double>& cos_value, const std::vector<double>& sin_value , const std::vector<unsigned int>& index)
 {
     cs_data_.index = index;
     cs_data_.cos_value=cos_value;
@@ -68,6 +68,7 @@ void line_detection::line_detector::setCosSinData(const std::vector<double>& bea
 
 void line_detection::line_detector::setRangeData(const std::vector<double>& ranges)
 {
+
     range_data_.ranges = ranges;
     range_data_.xs.clear();
     range_data_.ys.clear();
@@ -76,7 +77,27 @@ void line_detection::line_detector::setRangeData(const std::vector<double>& rang
         range_data_.xs.push_back(cs_data_.cos_value[*cit]*ranges[*cit]);
         range_data_.ys.push_back(cs_data_.sin_value[*cit]*ranges[*cit]);
     }
+    std::cout << "First 10 (x, y) points:\n";
+    for (size_t i = 0; i < std::min<size_t>(10, range_data_.xs.size()); ++i) {
+        std::cout << "(" << range_data_.xs[i] << ", " << range_data_.ys[i] << ")\n";
+    }
+
+    /*chatbot forslag
+    {
+        range_data_.ranges = ranges;
+        range_data_.xs.resize(ranges.size());
+        range_data_.ys.resize(ranges.size());
+
+        for (size_t i = 0; i < ranges.size(); ++i) {
+            range_data_.xs[i] = cs_data_.cos_value[i] * ranges[i];
+            range_data_.ys[i] = cs_data_.sin_value[i] * ranges[i];
+        }
+    }
+*/
+
 }
+
+
 
 least line_detection::line_detector::leastsquare(int start, int end,int firstfit)
 {
@@ -318,7 +339,7 @@ void line_detection::line_detector::cleanline()
             if(m>=n)
             {
                 theta_one_=atan(m_line[p].a);
-                theta_two_=atan(m_line[p].a);
+                theta_two_=atan(m_line[q].a);
 
                 theta_d_=fabs(theta_one_ - theta_two_);
 
@@ -438,6 +459,44 @@ void line_detection::line_detector::generate(std::vector<gline>& temp_line2)
     }
     temp_line2=output;
 }
+/*chatbot forslag----------------------------------------
+void line_detection::line_detector::generate(std::vector<gline>& temp_line2)
+{
+    gline line_temp;
+    std::vector<gline> output;
+
+    for (const auto& seg : m_line)
+    {
+        unsigned int left = seg.left;
+        unsigned int right = seg.right;
+
+        std::cout << "Line index range: left=" << left << " right=" << right << std::endl;
+
+        if (left >= range_data_.xs.size() || right >= range_data_.xs.size())
+            continue;
+
+        line_temp.x1 = range_data_.xs[left];
+        line_temp.y1 = range_data_.ys[left];
+        line_temp.x2 = range_data_.xs[right];
+        line_temp.y2 = range_data_.ys[right];
+
+        output.push_back(line_temp);
+
+        std::cout << "Line from (" << line_temp.x1 << ", " << line_temp.y1 << ") to ("
+          << line_temp.x2 << ", " << line_temp.y2 << ")\n";
+
+        if (left >= range_data_.xs.size() || right >= range_data_.xs.size())
+            continue;
+
+        std::cout << "Point at left=" << left << ": (" << range_data_.xs[left] << ", " << range_data_.ys[left] << ")\n";
+        std::cout << "Point at right=" << right << ": (" << range_data_.xs[right] << ", " << range_data_.ys[right] << ")\n";
+
+
+    }
+
+    temp_line2 = output;
+}*/
+//-------------------------------
 
 void line_detection::line_detector::extractline(std::vector<line_segment>& temp_line1, std::vector<gline>& temp_line2)
 {
